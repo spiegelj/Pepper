@@ -55,28 +55,19 @@ export const GameBoard = () => {
 	let deckVar = []	//shuffle(loadDeck(4))
 	let playersVar = []	//initializePlayers()
 
-	//loadGame()
-
 	async function loadGame() {
 		
 		playersVar = await initializePlayers()
 		deckVar = await loadDeck(4)
 		setPlayers(playersVar)
-		//finalizedPlayers = await deal(playersVar, deckVar)	// Populates a cards array in each player element
-		//console.log(['setGame - playersVar', playersVar])
-		//setPlayers(finalizedPlayers)
-		//console.log(gameSettings)
 		setLoading(false)
-	}
-
-	function updateLoading() {
-		setLoading(!(playersLoaded && gameSettings))
 	}
 
 	useEffect(() => {
 		loadGame()
 	}, [playersLoaded])
 
+	// Maintain the shared state as game is set up and played.
 	useEffect(() => {
 		setPepperState({ ...pepperState, pepperPlayers: players, pepperGameState: gameState, pepperBidState: bidState, pepperScoring: scoring })
 
@@ -92,8 +83,6 @@ export const GameBoard = () => {
 			}
 
 		const requestedDeck = /*await*/ createDeck(cardsInDeck)
-		//console.log(`RequestedDeck from ${cardsInDeck}:`)
-		//console.log(requestedDeck)
 		return requestedDeck
 	}
 
@@ -166,35 +155,6 @@ export const GameBoard = () => {
 				}
 			]
 		}
-	}
-
-	function initializeHand() {
-		return {
-			bidderId: 1,	// start at dealer ID + 1 mod player count
-			currentBid: 0,
-			bidById: 0
-		}
-	}
-
-	function initializeTrick() {
-		return {
-			cardsLaid: [null, null, null, null],
-			currentPlayerIndex: 0,
-			suitLed: null
-		}
-	}
-
-	// Game phase management functions
-	function beginBidding() {
-		let updateGameState = {
-			...gameState,
-			gamePhase: 1,	// Setup, 1 - Bidding, 2 - Playing, cleanup, scoring?
-			currentPlayerIndex: 0,
-			trump: null		// Hearts, Diamonds, Spades, Clubs, no -- have a trump indicator
-		}
-		setGameState(updateGameState)
-		setBidState(...bidState,
-			)
 	}
 
 	// Callback functions
@@ -543,13 +503,7 @@ export const GameBoard = () => {
 			return player.name.indexOf('#Open#') > -1
 		}
 	}
-	const dealHand = async () => {
-
-		//console.log(["deal(players, deck)",deal(players, deck)])
-	}
-
 	async function DealCards() {
-		//console.log(["deal(players, deck)", deal(players, deck)])
 		const deckVar = await loadDeck(4)
 		return await deal(players, deckVar)	// Populates a cards array in each player element
 	}
@@ -559,7 +513,6 @@ export const GameBoard = () => {
 
 		const deckVar = await loadDeck(4)
 		const dealtPlayers = await deal(players, deckVar)	// Populates a cards array in each player element
-		//console.log(['setGame - playersVar', playersVar])
 		setPlayers(dealtPlayers)
 
 		setBidState({

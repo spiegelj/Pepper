@@ -21,7 +21,6 @@ export const BiddingControl = (params) => {
 						name="bid"
 						value={option.bid}
 						checked={bid === option.bid}
-						/*checked={params.isDealer === true && params.highestBid === 'pass' && option.bid === '3' ? true : option.bid === 'pass'}*/
 						disabled={
 							(params.isDealer === true && (
 								(option.bid === 'try 3')
